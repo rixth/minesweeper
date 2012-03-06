@@ -24,6 +24,7 @@ var MinesweeperGame = (function () {
     this.size = size;
     this.difficulty = difficulty;
     this.mineProximities = {};
+    this.flaggedCells = [];
     this.isGameOver = false;
     this.inProgress = false;
 
@@ -56,15 +57,15 @@ var MinesweeperGame = (function () {
 
   Game.prototype.updateCellUi = function (x, y) {
     var cell = $(".cell[data-x='" + x + "'][data-y='" + y + "']").attr('class', 'cell').html(''),
-        cellFlag = this.getCell(x, y)
+        cellState = this.getCell(x, y);
 
-    if (cellFlag === CellFlags.MINE) {
+    if (cellState.mined) {
       cell.addClass('mineHere');
-    } else if (cellFlag === CellFlags.CLEARED) {
+    } else if (cellState.cleared) {
       cell.addClass('cleared').html(this.mineProximities[x + ',' + y]);
-    } else if (cellFlag === CellFlags.FLAGGED) {
-      cell.addClass('flagged');
     }
+    
+    cell.toggleClass('flagged', cellState.flagged);
   };
 
   Game.prototype.createGrid = function () {
@@ -77,45 +78,47 @@ var MinesweeperGame = (function () {
       this.grid.push([]);
       width = this.size;
       while (width--) {
-        _.last(this.grid).push(CellFlags.BLANK);
+        _.last(this.grid).push({
+          cleared: false,
+          mined: false,
+          flagged: false
+        });
       }
     }
   };
 
   Game.prototype.gameIsCompleted = function () {
-    // This is a hacky but fast way of detecting a win
-    return  _(currentGame.grid).flatten().join('').match(/[^12]/) === null;
-
-    // This is a more elegant way
-    // return !_(this.grid).any(function (row) {
-    //   return _(row).any(function (cellFlag) {
-    //     return cellFlag !== CellFlags.CLEARED && cellFlag !== CellFlags.MINE;
-    //   })
-    // });
+    return !_(this.grid).any(function (row) {
+      return _(row).any(function (cellState) {
+        return !cellState.cleared && !cellState.mined;
+      })
+    });
   };
 
   Game.prototype.cellClick = function (x, y, isFlagging) {
-    var cellFlag = this.getCell(x, y);
+    var cellState = this.getCell(x, y),
+        wasCleared = (cellState || {}).cleared,
+        i;
 
-    if (cellFlag === null || cellFlag === CellFlags.CLEARED) {
+    if (cellState === null || cellState.cleared) {
       return;
     }
 
     this.inProgress = true;
 
     if (isFlagging) {
-      this.markCellAs(x, y, cellFlag === CellFlags.FLAGGED ? CellFlags.BLANK : CellFlags.FLAGGED);
+      cellState.flagged = !cellState.flagged;
     } else {    
       if (this.bombAt(x, y)) {
         this.isGameOver = true;
         this.board.trigger('gameOver');
+        this.board.addClass('cheating');
       } else {
-        var adjacentMines = this.numberOfMinesAroundCell(x, y);
-        this.markCellAs(x, y, CellFlags.CLEARED);
-        this.mineProximities[x + ',' + y] = adjacentMines;
+        this.mineProximities[x + ',' + y] = this.numberOfMinesAroundCell(x, y);
+        cellState.cleared = true;
 
         // There are no mines here, so branch around but be careful not to loop
-        if (cellFlag !== CellFlags.CLEARED && adjacentMines === 0) {
+        if (!wasCleared && this.mineProximities[x + ',' + y] === 0) {
           this.clearAreaFrom(x, y);
         }
       }
@@ -147,7 +150,7 @@ var MinesweeperGame = (function () {
   };
 
   Game.prototype.bombAt = function (x, y) {
-    return this.getCell(x, y) === CellFlags.MINE
+    return (this.getCell(x, y) || {}).mined;
   };
 
   Game.prototype.getCell = function (x, y) {
@@ -177,22 +180,16 @@ var MinesweeperGame = (function () {
     return mineCount;
   };
 
-  Game.prototype.markCellAs = function (x, y, mode) {
-    if (this.validCell(x, y)) {
-      this.grid[y][x] = mode;
-    }
-  };
-
   Game.prototype.placeMines = function (count) {
     while(count--) {
       var x = random(0, this.size - 1),
           y = random(0, this.size - 1);
 
-      if (this.getCell(x, y) === CellFlags.MINE) {
+      if (this.getCell(x, y).mined) {
         // There's already a mine here, so bump us up one
         count++;
       } else {
-        this.markCellAs(x, y, CellFlags.MINE);
+        this.getCell(x, y).mined = true;
       }
     }
   };
