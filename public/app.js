@@ -65,19 +65,21 @@
     }); 
   });
 
-  $('#cheat').on('click', function () {
+  $('#cheat').on('click', function (e) {
     board.toggleClass('cheating');
+    e.preventDefault();
   });
 
-  $('#save').on('click', function () {
+  $('#save').on('click', function (e) {
     window.localStorage.setItem('minesweeperState', JSON.stringify(currentGame.toJSON()));
+    e.preventDefault();
   });
-  $('#load').on('click', function () {
+  $('#load').on('click', function (e) {
     promptNewGame(function () {
       var gameState = JSON.parse(window.localStorage.getItem('minesweeperState'));
       currentGame = new MinesweeperGame(board, gameState);
-      
     });
+    e.preventDefault();
   });
 
 
