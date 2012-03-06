@@ -26,18 +26,23 @@
         difficulty = $(this).attr('data-difficulty');
         $(this).siblings().removeClass('active').end().addClass('active');
       }
-      currentGame = new MinesweeperGame(size, difficulty);
+      startNewGame();
     }).bind(this));
   }).find("li[data-difficulty='" + difficulty + "']").addClass('active');
 
   $('#sizeSelector').on('change', function () {
     promptNewGame((function () {
       size = $(this).val();
-      currentGame = new MinesweeperGame(size, difficulty);
+      startNewGame();
     }).bind(this), (function () {
       $(this).val(size);
     }).bind(this));
   }).val(8);
+
+  board.on('gameCreated', function () {
+    currentGame.renderFull();
+    resizeCells();
+  })
 
   function promptNewGame(continueCallback, cancelCallback) {
     if (false) {
@@ -47,4 +52,11 @@
       continueCallback();
     }
   }
+
+  function startNewGame(options) {
+    options = options || {};
+    currentGame = new MinesweeperGame(options.board || board, options.size || size, options.difficulty || difficulty);
+  }
+
+  $(startNewGame);
 })(jQuery);
