@@ -1,0 +1,12 @@
+table#playarea {
+  &.grid-12x12 {
+    width: 576px;
+    td {
+      width: 48px;
+      height: 48px;
+    }
+  }
+  td {
+    padding: 0;
+  }
+}
