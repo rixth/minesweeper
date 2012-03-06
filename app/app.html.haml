@@ -8,10 +8,49 @@
     %link{rel: "stylesheet", href: "vendor/bootstrap/css/bootstrap-responsive.css"}
     %link{rel: "stylesheet", href: "app.css"}
   %body
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container
+          %a.brand Minesweeper
+
+    .container
+      #playarea
+        .btn-toolbar
+          .btn-group
+            %a.btn.btn-success New game
+            %a.btn.btn-success.dropdown-toggle{data: {toggle: "dropdown"}}
+              %span.caret
+            %ul.dropdown-menu
+              %li <a>Easy</a>
+              %li <a>Normal</a>
+              %li <a>Hard</a>
+              %li <a>Extreme</a>
+          .btn-group
+            %a.btn.dropdown-toggle{data: {toggle: "dropdown"}}
+              Size
+              %span.caret
+            %ul.dropdown-menu
+              %li <a>8x8</a>
+              %li <a>16x16</a>
+              %li <a>32x32</a>
+          .btn-group
+            %a.btn.btn-danger CHEAT
+
+
+        %table#board.table.table-bordered
+          %tbody
+
+        .btn-toolbar
+          .progress.progress-info.progress-striped.hidden
+            .bar{style: "width: 40%"}
+          %a.btn.btn-info.hidden
+            Validate
+        
     %script{src: "vendor/LAB.min.js"}
     :javascript
       $LAB.script("vendor/underscore-1.2.3.js")
           .script("http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js")
+          .script("minesweeper.js")
           .wait()
           .script("vendor/bootstrap/js/bootstrap.min.js")
-          .wait();
+          .script("app.js");

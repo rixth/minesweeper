@@ -1,12 +1,17 @@
-table#playarea {
-  &.grid-12x12 {
-    width: 576px;
-    td {
-      width: 48px;
-      height: 48px;
-    }
+$markedColor: pink;
+
+.navbar {
+  position: inherit;
+}
+
+#playarea table {
+  tr:hover td {
+    background: transparent;
   }
   td {
     padding: 0;
+    &.marked {
+      background: $markedColor !important; // important to override hover
+    }
   }
 }
