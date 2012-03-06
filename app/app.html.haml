@@ -50,7 +50,7 @@
     :javascript
       $LAB.script("vendor/underscore-1.2.3.js")
           .script("http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js")
-          .script("minesweeper.js")
+          .script("minesweeper.js?" + Math.random())
           .wait()
           .script("vendor/bootstrap/js/bootstrap.min.js")
           .script("app.js");
