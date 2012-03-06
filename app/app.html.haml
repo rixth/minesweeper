@@ -51,6 +51,15 @@
         .btn-toolbar
           %a#cheat Cheat
 
+    #newGameConformation.modal.fade
+      .modal-header
+        %h3 Hold up!
+      .modal-body
+        %p Are you sure you want to start a new game? You'll lose your progress so far!
+      .modal-footer
+        %a.btn.btn-primary Start new game
+        %a.btn Close
+
     %script{src: "vendor/LAB.min.js"}
     :javascript
       $LAB.script("vendor/underscore-1.2.3.js")

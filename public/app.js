@@ -71,9 +71,20 @@
   });
 
   function promptNewGame(continueCallback, cancelCallback) {
-    if (false) {
-      // Prompt for continue, then call callback
+    if (currentGame.inProgress) {
+      var modal = $('#newGameConformation');
 
+      modal.modal().on('hide', function () {
+        $(this).off('.confirmation');
+      }).on('click.confirmation', '.btn', function () {
+        if ($(this).hasClass('btn-primary')) {
+          continueCallback();
+        } else {
+          cancelCallback && cancelCallback();
+        }
+        
+        modal.modal('hide');
+      });
     } else {
       continueCallback();
     }
