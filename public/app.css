@@ -41,10 +41,6 @@
   #board.size-32 .cell-row:not(:last-child) .cell {
     border-bottom: none; }
 
-#cheat {
-  color: #da4f49;
-  cursor: pointer; }
-
 #sizeSelector {
   margin-top: -13px;
   width: 100px; }

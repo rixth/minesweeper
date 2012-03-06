@@ -49,13 +49,15 @@
         #board{class: ""}
 
         .btn-toolbar
-          %a#cheat Cheat
+          %a.btn.btn-danger#cheat Cheat
+          %a.btn.btn#save Save
+          %a.btn.btn#load Load
 
     #newGameConformation.modal.fade
       .modal-header
         %h3 Hold up!
       .modal-body
-        %p Are you sure you want to start a new game? You'll lose your progress so far!
+        %p Are you sure you want to do this? You'll lose your progress so far!
       .modal-footer
         %a.btn.btn-primary Start new game
         %a.btn Close

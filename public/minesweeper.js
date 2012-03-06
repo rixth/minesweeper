@@ -23,24 +23,34 @@ var MinesweeperGame = (function () {
   };
 
   Game = function MinesweeperGame(board, size, difficulty) {
+    this.saveFields = ['grid', 'size', 'difficulty', 'mineProximities', 'isGameOver', 'inProgress'];
     this.board = board;
-    this.size = size;
-    this.difficulty = difficulty;
-    this.mineProximities = {};
-    this.flaggedCells = [];
-    this.isGameOver = false;
-    this.inProgress = false;
 
-    // Calculate the number of mines, based off the notion that an 8x8 grid
-    // has 10 mines, the apply the difficulty modifier.
-    this.mineCount = Math.round((size * size) / 64 * 10 * Difficulties[difficulty]);
+    if (typeof(size) === 'object') {
+      // Loading a save...
+      this.saveFields.forEach($.proxy(function (fieldName) {
+        this[fieldName] = size[fieldName];
+      }, this));
+      _.defer($.proxy(function () {
+        this.board.trigger('gameCreated');
+      }, this));
+    } else {
+      this.size = size;
+      this.difficulty = difficulty;
+      this.mineProximities = {};
+      this.isGameOver = false;
+      this.inProgress = false;
 
+      // Calculate the number of mines, based off the notion that an 8x8 grid
+      // has 10 mines, the apply the difficulty modifier.
+      this.mineCount = Math.round((size * size) / 64 * 10 * Difficulties[difficulty]);
 
-    _.defer($.proxy(function () {
-      this.createGrid();
-      this.placeMines(this.mineCount);
-      this.board.trigger('gameCreated');
-    }, this));
+      _.defer($.proxy(function () {
+        this.createGrid();
+        this.placeMines(this.mineCount);
+        this.board.trigger('gameCreated');
+      }, this));
+    }
   };
 
   Game.prototype.renderFull = function () {
@@ -196,6 +206,14 @@ var MinesweeperGame = (function () {
         this.getCell(x, y).mined = true;
       }
     }
+  };
+
+  Game.prototype.toJSON = function () {
+    var data = {};
+    this.saveFields.forEach($.proxy(function (fieldName) {
+      data[fieldName] = this[fieldName];
+    }, this));
+    return data;
   };
 
   function random(min, max) {

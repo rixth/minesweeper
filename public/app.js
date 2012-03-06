@@ -68,6 +68,19 @@
   $('#cheat').on('click', function () {
     board.toggleClass('cheating');
   });
+
+  $('#save').on('click', function () {
+    window.localStorage.setItem('minesweeperState', JSON.stringify(currentGame.toJSON()));
+  });
+  $('#load').on('click', function () {
+    promptNewGame(function () {
+      var gameState = JSON.parse(window.localStorage.getItem('minesweeperState'));
+      currentGame = new MinesweeperGame(board, gameState);
+      
+    });
+  });
+
+
   $('#validate').on('click', function () {
     currentGame.inProgress = false;
     currentGame.isGameOver = true;
@@ -106,9 +119,11 @@
 
   function updateUiVisiblity() {
     var cheatButton = $('#cheat'),
-        validateButton = $('#validate');
+        validateButton = $('#validate'),
+        saveButton = $('#save');
 
     validateButton.toggleClass('hidden', !currentGame.inProgress || currentGame.isGameOver);
+    saveButton.toggleClass('hidden', !currentGame.inProgress || currentGame.isGameOver);
     cheatButton.toggleClass('hidden', currentGame.isGameOver);
   }
 
