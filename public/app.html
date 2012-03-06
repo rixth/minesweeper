@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8' />
+    <title>Minesweeper</title>
+    <meta content='width=device-width, initial-scale=1.0' name='viewport' />
+    <link href='vendor/bootstrap/css/bootstrap.css' rel='stylesheet' />
+    <link href='vendor/bootstrap/css/bootstrap-responsive.css' rel='stylesheet' />
+    <link href='app.css' rel='stylesheet' />
+  </head>
+  <body>
+    <div class='navbar navbar-fixed-top'>
+      <div class='navbar-inner'>
+        <div class='container'>
+          <a class='brand'>Minesweeper</a>
+        </div>
+      </div>
+    </div>
+    <div class='container'>
+      <div id='playarea'>
+        <div class='btn-toolbar'>
+          <div class='btn-group' id='newGameControl'>
+            <a class='btn btn-success'>New game</a>
+            <a class='btn btn-success dropdown-toggle' data-toggle='dropdown'>
+              <span class='caret'></span>
+            </a>
+            <ul class='dropdown-menu'>
+              <li data-difficulty='EASY'>
+                <a>Easy</a>
+              </li>
+              <li data-difficulty='NORMAL'>
+                <a>Normal</a>
+              </li>
+              <li data-difficulty='HARD'>
+                <a>Hard</a>
+              </li>
+              <li data-difficulty='EXTREME'>
+                <a>Extreme</a>
+              </li>
+            </ul>
+          </div>
+          <select id='sizeSelector'>
+            <option value='8'>Size: 8x8</option>
+            <option value='16'>Size: 16x16</option>
+            <option value='32'>Size: 32x32</option>
+          </select>
+          <div class='btn-group'>
+            <a class='btn btn-info hidden' id='validate'>Validate</a>
+          </div>
+        </div>
+        <div class='alert alert-error hidden' id='gameOver'>
+          <strong>Game over!</strong>
+          Sorry, you stepped on a mine &amp; died. Better luck next time.
+        </div>
+        <div class='alert alert-error hidden' id='gameIncomplete'>
+          <strong>Game over!</strong>
+          Sorry, you didn't mark all the mines!
+        </div>
+        <div class='alert alert-success hidden' id='gameWin'>
+          <strong>Well done!</strong>
+          A winner is you!
+        </div>
+        <div class='' id='board'></div>
+        <div class='btn-toolbar'>
+          <a id='cheat'>Cheat</a>
+        </div>
+      </div>
+    </div>
+    <div class='modal fade' id='newGameConformation'>
+      <div class='modal-header'>
+        <h3>Hold up!</h3>
+      </div>
+      <div class='modal-body'>
+        <p>Are you sure you want to start a new game? You'll lose your progress so far!</p>
+      </div>
+      <div class='modal-footer'>
+        <a class='btn btn-primary'>Start new game</a>
+        <a class='btn'>Close</a>
+      </div>
+    </div>
+    <script src='vendor/LAB.min.js'></script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        $LAB.script("vendor/underscore-1.2.3.js")
+            .script("http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js")
+            .script("minesweeper.js?" + Math.random())
+            .wait()
+            .script("vendor/bootstrap/js/bootstrap.min.js")
+            .script("app.js?" + Math.random());
+      //]]>
+    </script>
+  </body>
+</html>

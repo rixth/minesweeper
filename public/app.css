@@ -1,0 +1,87 @@
+.navbar {
+  position: inherit; }
+
+.btn-toolbar {
+  clear: both; }
+
+#board {
+  width: 100%; }
+  #board .cell {
+    box-sizing: border-box;
+    float: left;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    text-align: center;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-pack: center;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-pack: center; }
+    #board .cell.flagged {
+      background: salmon; }
+    #board .cell.cleared {
+      box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.2); }
+  #board.cheating .cell.mineHere {
+    border-color: red; }
+  #board.size-8 .cell {
+    width: 10.5%;
+    margin: 1%; }
+  #board.size-16 .cell {
+    width: 5.75%;
+    margin: 0.25%; }
+  #board.size-32 .cell {
+    width: 3.125%;
+    margin: 0%;
+    border-radius: 0; }
+    #board.size-32 .cell:not(:last-child) {
+      border-right: none; }
+  #board.size-32 .cell-row:not(:last-child) .cell {
+    border-bottom: none; }
+
+#cheat {
+  color: #da4f49;
+  cursor: pointer; }
+
+#sizeSelector {
+  margin-top: -13px;
+  width: 100px; }
+
+@media (max-width: 768px) {
+  .size-8 .cell {
+    font-size: 200%; }
+
+  .size-16 .cell {
+    font-size: 100%; }
+
+  .size-32 .cell {
+    font-size: 60%;
+    line-height: 10px; } }
+@media (min-width: 768px) and (max-width: 980px) {
+  .size-8 .cell {
+    font-size: 300%; }
+
+  .size-16 .cell {
+    font-size: 170%; }
+
+  .size-32 .cell {
+    font-size: 110%; } }
+@media (min-width: 980px) and (max-width: 1200px) {
+  .size-8 .cell {
+    font-size: 400%; }
+
+  .size-16 .cell {
+    font-size: 230%; }
+
+  .size-32 .cell {
+    font-size: 150%; } }
+@media (min-width: 1200px) {
+  .size-8 .cell {
+    font-size: 500%; }
+
+  .size-16 .cell {
+    font-size: 330%; }
+
+  .size-32 .cell {
+    font-size: 180%; } }
