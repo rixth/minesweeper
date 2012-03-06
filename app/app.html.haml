@@ -34,16 +34,13 @@
             %option{value: 16} Size: 16x16
             %option{value: 32} Size: 32x32
           .btn-group
-            %a.btn.btn-danger#cheat CHEAT
+            %a.btn.btn-info.hidden#validate Validate
 
         #board{class: ""}
-
-        .btn-toolbar
-          .progress.progress-info.progress-striped.hidden
-            .bar{style: "width: 40%"}
-          %a.btn.btn-info.hidden
-            Validate
         
+        .btn-toolbar
+          %a#cheat Cheat
+
     %script{src: "vendor/LAB.min.js"}
     :javascript
       $LAB.script("vendor/underscore-1.2.3.js")

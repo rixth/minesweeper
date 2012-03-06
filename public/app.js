@@ -40,11 +40,14 @@
     board.on('gameCreated', function () {
       currentGame.renderFull();
       resizeCells();
+      updateButtonVisiblity();
     }).on('gameOver', function () {
       alert('GAME OVER');
+      updateButtonVisiblity();
     }).on('mousedown', '.cell', function (event) {
       var data = $(this).data();
       currentGame.cellClick(data.x, data.y, event.which === 3);
+      updateButtonVisiblity();
     }).on('contextmenu', function () {
       return false;
     })    
@@ -66,6 +69,14 @@
   function startNewGame(options) {
     options = options || {};
     currentGame = new MinesweeperGame(options.board || board, options.size || size, options.difficulty || difficulty);
+  }
+
+  function updateButtonVisiblity() {
+    var cheatButton = $('#cheat'),
+        validateButton = $('#validate');
+
+    validateButton.toggleClass('hidden', !currentGame.inProgress || currentGame.isGameOver);
+    cheatButton.toggleClass('hidden', currentGame.isGameOver);
   }
 
   $(startNewGame);

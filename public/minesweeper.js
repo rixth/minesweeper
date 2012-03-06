@@ -24,6 +24,8 @@ var MinesweeperGame = (function () {
     this.size = size;
     this.difficulty = difficulty;
     this.mineProximities = {};
+    this.isGameOver = false;
+    this.inProgress = false;
 
     // Calculate the number of mines, based off the notion that an 8x8 grid
     // has 10 mines, the apply the difficulty modifier.
@@ -83,14 +85,17 @@ var MinesweeperGame = (function () {
   Game.prototype.cellClick = function (x, y, isFlagging) {
     var cellFlag = this.getCell(x, y);
 
-    if (cellFlag === null) {
+    if (cellFlag === null || cellFlag === CellFlags.CLEARED) {
       return;
     }
+
+    this.inProgress = true;
 
     if (isFlagging) {
       this.markCellAs(x, y, cellFlag === CellFlags.FLAGGED ? CellFlags.BLANK : CellFlags.FLAGGED);
     } else {    
       if (this.bombAt(x, y)) {
+        this.isGameOver = true;
         this.board.trigger('gameOver');
       } else {
         var adjacentMines = this.numberOfMinesAroundCell(x, y);
