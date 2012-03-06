@@ -44,7 +44,11 @@ var MinesweeperGame = (function () {
         _.last(this.grid).push(CellFlags.BLANK);
       }
     }
-  }
+  };
+
+  Game.prototype.bombAt = function (x, y) {
+    return this.getCell(x, y) === CellFlags.MINE
+  };
 
   Game.prototype.getCell = function (x, y) {
     return this.grid[y][x];
