@@ -23,6 +23,7 @@
     promptNewGame((function () {
       // Select the difficulty in the list
       if (this.tagName.toUpperCase() === 'LI') {
+        difficulty = $(this).attr('data-difficulty');
         $(this).siblings().removeClass('active').end().addClass('active');
       }
       currentGame = new MinesweeperGame(size, difficulty);
