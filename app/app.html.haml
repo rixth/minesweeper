@@ -1,0 +1,17 @@
+!!!5
+%html
+  %head
+    %meta{charset: "utf-8"}
+    %title Minesweeper
+    %meta{name: "viewport", content: "width=device-width, initial-scale=1.0"}
+    %link{rel: "stylesheet", href: "vendor/bootstrap/css/bootstrap.css"}
+    %link{rel: "stylesheet", href: "vendor/bootstrap/css/bootstrap-responsive.css"}
+    %link{rel: "stylesheet", href: "app.css"}
+  %body
+    %script{src: "vendor/LAB.min.js"}
+    :javascript
+      $LAB.script("vendor/underscore-1.2.3.js")
+          .script("http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js")
+          .wait()
+          .script("vendor/bootstrap/js/bootstrap.min.js")
+          .wait();
