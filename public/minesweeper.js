@@ -9,10 +9,10 @@ var MinesweeperGame = (function () {
       Game;
 
   Difficulties = {
-    EASY: 0.8,
+    EASY: 0.6,
     NORMAL: 1.0,
-    HARD: 1.2,
-    EXTREME: 1.5
+    HARD: 1.5,
+    EXTREME: 2
   };
 
   CellFlags = {
