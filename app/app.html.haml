@@ -16,23 +16,23 @@
     .container
       #playarea
         .btn-toolbar
-          .btn-group
+          .btn-group#newGameControl
             %a.btn.btn-success New game
             %a.btn.btn-success.dropdown-toggle{data: {toggle: "dropdown"}}
               %span.caret
             %ul.dropdown-menu
-              %li <a>Easy</a>
-              %li <a>Normal</a>
-              %li <a>Hard</a>
-              %li <a>Extreme</a>
-          .btn-group
-            %a.btn.dropdown-toggle{data: {toggle: "dropdown"}}
-              Size
-              %span.caret
-            %ul.dropdown-menu
-              %li <a>8x8</a>
-              %li <a>16x16</a>
-              %li <a>32x32</a>
+              %li{data: {difficulty: "EASY"}}
+                %a Easy
+              %li{data: {difficulty: "NORMAL"}}
+                %a Normal
+              %li{data: {difficulty: "HARD"}}
+                %a Hard
+              %li{data: {difficulty: "EXTREME"}}
+                %a Extreme
+          %select#sizeSelector
+            %option{value: 8} Size: 8x8
+            %option{value: 16} Size: 16x16
+            %option{value: 32} Size: 32x32
           .btn-group
             %a.btn.btn-danger CHEAT
 
