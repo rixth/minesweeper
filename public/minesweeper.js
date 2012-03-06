@@ -96,12 +96,18 @@ var MinesweeperGame = (function () {
     this.updateCellUi(x, y);
   };
 
+
+
+  Game.prototype.validCell = function (x, y) {
+    return x >= 0 && y >= 0 && x < this.size - 1 && y < this.size - 1;
+  };
+
   Game.prototype.bombAt = function (x, y) {
     return this.getCell(x, y) === CellFlags.MINE
   };
 
   Game.prototype.getCell = function (x, y) {
-    return this.grid[y] && this.grid[y][x] ? this.grid[y][x] : null;
+    return this.validCell(x, y) ? this.grid[y][x] : null;
   };
 
   Game.prototype.numberOfMinesAroundCell = function (x, y) {
@@ -128,7 +134,9 @@ var MinesweeperGame = (function () {
   };
 
   Game.prototype.markCellAs = function (x, y, mode) {
-    this.grid[y][x] = mode;
+    if (this.validCell(x, y)) {
+      this.grid[y][x] = mode;
+    }
   };
 
   Game.prototype.placeMines = function (count) {
