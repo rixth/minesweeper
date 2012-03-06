@@ -40,13 +40,13 @@ var MinesweeperGame = (function () {
 
   Game.prototype.renderFull = function () {
     var r = _.range(this.size),
-        board = this.board,
+        board = this.board.empty(),
         game = this;
 
     board.attr('class', board.attr('class').replace(/\bsize-\d+\b/, '')).addClass('size-' + this.size);
 
     r.forEach(function (y) {
-      var row = $('<div class="row"></div>').appendTo(board);
+      var row = $('<div class="cell-row"></div>').appendTo(board);
       r.forEach(function (x) {
         var cell = $('<div class="cell" data-x="' + x + '" data-y="' + y + '"></div>').appendTo(row);
         game.updateCellUi(x, y);
@@ -80,6 +80,18 @@ var MinesweeperGame = (function () {
         _.last(this.grid).push(CellFlags.BLANK);
       }
     }
+  };
+
+  Game.prototype.gameIsCompleted = function () {
+    // This is a hacky but fast way of detecting a win
+    return  _(currentGame.grid).flatten().join('').match(/[^12]/) === null;
+
+    // This is a more elegant way
+    // return !_(this.grid).any(function (row) {
+    //   return _(row).any(function (cellFlag) {
+    //     return cellFlag !== CellFlags.CLEARED && cellFlag !== CellFlags.MINE;
+    //   })
+    // });
   };
 
   Game.prototype.cellClick = function (x, y, isFlagging) {

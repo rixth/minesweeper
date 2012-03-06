@@ -36,8 +36,18 @@
           .btn-group
             %a.btn.btn-info.hidden#validate Validate
 
+        #gameOver.alert.alert-error.hidden
+          %strong Game over!
+          Sorry, you stepped on a mine &amp; died. Better luck next time.
+        #gameIncomplete.alert.alert-error.hidden
+          %strong Game over!
+          Sorry, you didn't mark all the mines!
+        #gameWin.alert.alert-success.hidden
+          %strong Well done!
+          A winner is you!
+
         #board{class: ""}
-        
+
         .btn-toolbar
           %a#cheat Cheat
 

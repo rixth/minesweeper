@@ -46,7 +46,7 @@
         border-right: none;
       }
     }
-    .row:not(:last-child) .cell {
+    .cell-row:not(:last-child) .cell {
       border-bottom: none;
     }
   }
