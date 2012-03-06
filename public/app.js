@@ -37,6 +37,9 @@
     }, this));
   }).val(8);
 
+  // Guh, stoopid mobile webkit...
+  $('.btn').attr('onclick', 'void(0);');
+
   $(function () {
     board.on('gameCreated', function () {
       currentGame.renderFull();
