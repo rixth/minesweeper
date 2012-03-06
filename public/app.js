@@ -1,10 +1,13 @@
+/*jshint forin:true, noarg:true, noempty:true, eqeqeq:true, bitwise:true, strict:true, undef:true, curly:true, browser:true, indent:2, maxerr:50 */
+/*globals jQuery, MinesweeperGame */
+
 (function ($, undefined) {
-  // "use strict";
+  "use strict";
 
   var board = $('#board'),
       size = 8,
       difficulty = 'NORMAL',
-      // currentGame,
+      currentGame,
       gameState = {};
 
   function resizeCells() {
@@ -15,23 +18,23 @@
   $(window).resize(resizeCells);
 
   $('#newGameControl').on('click', 'ul li, div>a:first-child', function (event) {
-    promptNewGame((function () {
+    promptNewGame($.proxy(function () {
       // Select the difficulty in the list
       if (this.tagName.toUpperCase() === 'LI') {
         difficulty = $(this).attr('data-difficulty');
         $(this).siblings().removeClass('active').end().addClass('active');
       }
       startNewGame();
-    }).bind(this));
+    }, this));
   }).find("li[data-difficulty='" + difficulty + "']").addClass('active');
 
   $('#sizeSelector').on('change', function () {
-    promptNewGame((function () {
+    promptNewGame($.proxy(function () {
       size = $(this).val();
       startNewGame();
-    }).bind(this), (function () {
+    }, this), $.proxy(function () {
       $(this).val(size);
-    }).bind(this));
+    }, this));
   }).val(8);
 
   $(function () {
@@ -41,6 +44,7 @@
       updateUiVisiblity();
       currentGame.inProgress = null;
       $('#gameOver, #gameIncomplete, #gameWin').addClass('hidden');
+      board.removeClass('cheating');
     }).on('gameOver', function () {
       currentGame.inProgress = false;
       updateUiVisiblity();
@@ -51,9 +55,11 @@
         currentGame.cellClick(data.x, data.y, event.which === 3);
         updateUiVisiblity();
       }
+      event.preventDefault();
+      event.stopPropagation();
     }).on('contextmenu', function () {
       return false;
-    })    
+    }); 
   });
 
   $('#cheat').on('click', function () {

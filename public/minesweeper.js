@@ -1,3 +1,6 @@
+/*jshint forin:true, noarg:true, noempty:true, eqeqeq:true, bitwise:true, strict:true, undef:true, curly:true, browser:true, indent:2, maxerr:50 */
+/*globals _, $ */
+
 var MinesweeperGame = (function () {
   "use strict";
 
@@ -32,11 +35,12 @@ var MinesweeperGame = (function () {
     // has 10 mines, the apply the difficulty modifier.
     this.mineCount = Math.round((size * size) / 64 * 10 * Difficulties[difficulty]);
 
-    _.defer((function () {
+
+    _.defer($.proxy(function () {
       this.createGrid();
       this.placeMines(this.mineCount);
       this.board.trigger('gameCreated');
-    }).bind(this));
+    }, this));
   };
 
   Game.prototype.renderFull = function () {
@@ -74,7 +78,7 @@ var MinesweeperGame = (function () {
 
     this.grid = [];
 
-    while(height--) {
+    while (height--) {
       this.grid.push([]);
       width = this.size;
       while (width--) {
@@ -91,7 +95,7 @@ var MinesweeperGame = (function () {
     return !_(this.grid).any(function (row) {
       return _(row).any(function (cellState) {
         return !cellState.cleared && !cellState.mined;
-      })
+      });
     });
   };
 
@@ -181,7 +185,7 @@ var MinesweeperGame = (function () {
   };
 
   Game.prototype.placeMines = function (count) {
-    while(count--) {
+    while (count--) {
       var x = random(0, this.size - 1),
           y = random(0, this.size - 1);
 

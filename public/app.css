@@ -18,7 +18,8 @@
     -webkit-box-pack: center;
     display: -moz-box;
     -moz-box-orient: vertical;
-    -moz-box-pack: center; }
+    -moz-box-pack: center;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
     #board .cell.flagged {
       background: salmon; }
     #board .cell.cleared {

@@ -30,6 +30,8 @@
     display: -moz-box;
     -moz-box-orient: vertical;
     -moz-box-pack: center;
+
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   }
 
   &.cheating {
