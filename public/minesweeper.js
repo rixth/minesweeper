@@ -81,8 +81,14 @@ var MinesweeperGame = (function () {
   };
 
   Game.prototype.cellClick = function (x, y, isFlagging) {
+    var cellFlag = this.getCell(x, y);
+
+    if (cellFlag === null) {
+      return;
+    }
+
     if (isFlagging) {
-      this.markCellAs(x, y, this.getCell(x, y) === CellFlags.FLAGGED ? CellFlags.BLANK : CellFlags.FLAGGED);
+      this.markCellAs(x, y, cellFlag === CellFlags.FLAGGED ? CellFlags.BLANK : CellFlags.FLAGGED);
     } else {    
       if (this.bombAt(x, y)) {
         this.board.trigger('gameOver');
@@ -90,16 +96,37 @@ var MinesweeperGame = (function () {
         var adjacentMines = this.numberOfMinesAroundCell(x, y);
         this.markCellAs(x, y, CellFlags.CLEARED);
         this.mineProximities[x + ',' + y] = adjacentMines;
-        // TODO branching to clear adjacent areas
+
+        // There are no mines here, so branch around but be careful not to loop
+        if (cellFlag !== CellFlags.CLEARED && adjacentMines === 0) {
+          this.clearAreaFrom(x, y);
+        }
       }
     }
     this.updateCellUi(x, y);
   };
 
-
+  Game.prototype.clearAreaFrom = function (x, y) {
+    // Top left
+    this.cellClick(x - 1, y - 1);
+    // Top
+    this.cellClick(x, y - 1);
+    // Top right
+    this.cellClick(x + 1, y - 1);
+    // Right
+    this.cellClick(x + 1, y);
+    // Bottom right
+    this.cellClick(x + 1, y + 1);
+    // Bottom
+    this.cellClick(x, y + 1);
+    // Bottom left
+    this.cellClick(x - 1, y + 1);
+    // Left
+    this.cellClick(x - 1, y);
+  };
 
   Game.prototype.validCell = function (x, y) {
-    return x >= 0 && y >= 0 && x < this.size - 1 && y < this.size - 1;
+    return x >= 0 && y >= 0 && x <= this.size - 1 && y <= this.size - 1;
   };
 
   Game.prototype.bombAt = function (x, y) {
