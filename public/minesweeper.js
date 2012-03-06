@@ -38,13 +38,16 @@ var MinesweeperGame = (function () {
 
   Game.prototype.renderFull = function () {
     var r = _.range(this.size),
-        tbody = this.board.find('tbody').empty();
+        board = this.board,
+        game = this;
+
+    board.attr('class', board.attr('class').replace(/\bsize-\d+\b/, '')).addClass('size-' + this.size);
 
     r.forEach(function (y) {
-      var row = $('<tr></tr>').appendTo(tbody);
+      var row = $('<div class="row"></div>').appendTo(board);
       r.forEach(function (x) {
-        var cell = $('<td></td>').appendTo(row);
-        cell.toggleClass('bombHere', currentGame.bombAt(x, y));
+        var cell = $('<div class="cell" data-coords="' + x + ',' + y + '"></div>').appendTo(row);
+        // cell.toggleClass('bombHere', game.bombAt(x, y));
       });
     });
   }
@@ -66,7 +69,7 @@ var MinesweeperGame = (function () {
 
   Game.prototype.cellClear = function (x, y) {
     if (this.bombAt(x, y)) {
-      this.board.trigger('failure');
+      this.board.trigger('gameOver');
     } else {
       var adjacentMines = this.numberOfMinesAroundCell(x, y);
       this.markCellAs(x, y, CellFlags.CLEARED);

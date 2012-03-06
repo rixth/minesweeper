@@ -4,14 +4,39 @@ $markedColor: pink;
   position: inherit;
 }
 
-#playarea table {
-  tr:hover td {
-    background: transparent;
-  }
-  td {
-    padding: 0;
+
+#board {
+  width: 100%;
+
+  .cell {
+    box-sizing: border-box;
+    float: left;
+    border: 1px solid #ddd;
+    border-radius: 3px;
     &.marked {
-      background: $markedColor !important; // important to override hover
+      background: $markedColor !important;
+    }
+  }
+
+  &.size-8 .cell {
+    width: 10.5%;
+    margin: 1%;
+  }
+  &.size-16 .cell {
+    width: 5.75%;
+    margin: 0.25%;
+  }
+  &.size-32 {
+    .cell {
+      width: 3.125%;
+      margin: 0%;
+      border-radius: 0;
+      &:not(:last-child) {
+        border-right: none;
+      }
+    }
+    .row:not(:last-child) .cell {
+      border-bottom: none;
     }
   }
 }
