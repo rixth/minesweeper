@@ -49,6 +49,9 @@
   margin-top: -13px;
   width: 100px; }
 
+@media (max-width: 767px) {
+  #sizeSelector {
+    display: none; } }
 @media (max-width: 768px) {
   .size-8 .cell {
     font-size: 200%; }

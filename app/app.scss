@@ -74,6 +74,12 @@
 }
 
 
+@media (max-width: 767px) {
+  #sizeSelector {
+    display: none;
+  }
+}
+
 // Landscape phone to portrait tablet
 @media (max-width: 768px) {
   .size-8 .cell {
