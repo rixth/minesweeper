@@ -71,6 +71,7 @@
   });
 
   $('#save').on('click', function (e) {
+    updateUiVisiblity();
     window.localStorage.setItem('minesweeperState', JSON.stringify(currentGame.toJSON()));
     e.preventDefault();
   });
@@ -78,6 +79,7 @@
     promptNewGame(function () {
       var gameState = JSON.parse(window.localStorage.getItem('minesweeperState'));
       currentGame = new MinesweeperGame(board, gameState);
+      updateUiVisiblity();
     });
     e.preventDefault();
   });
@@ -122,11 +124,13 @@
   function updateUiVisiblity() {
     var cheatButton = $('#cheat'),
         validateButton = $('#validate'),
-        saveButton = $('#save');
+        saveButton = $('#save'),
+        loadButton = $('#load');
 
     validateButton.toggleClass('hidden', !currentGame.inProgress || currentGame.isGameOver);
     saveButton.toggleClass('hidden', !currentGame.inProgress || currentGame.isGameOver);
     cheatButton.toggleClass('hidden', currentGame.isGameOver);
+    loadButton.toggleClass('hidden', !window.localStorage.getItem('minesweeperState'));
   }
 
   $(startNewGame);
