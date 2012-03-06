@@ -3,7 +3,7 @@ var MinesweeperGame = (function () {
 
   var Difficulties,
       CellFlags,
-      Game
+      Game;
 
   Difficulties = {
     EASY: 0.8,
@@ -46,11 +46,24 @@ var MinesweeperGame = (function () {
     r.forEach(function (y) {
       var row = $('<div class="row"></div>').appendTo(board);
       r.forEach(function (x) {
-        var cell = $('<div class="cell" data-coords="' + x + ',' + y + '"></div>').appendTo(row);
-        // cell.toggleClass('bombHere', game.bombAt(x, y));
+        var cell = $('<div class="cell" data-x="' + x + '" data-y="' + y + '"></div>').appendTo(row);
+        game.updateCellUi(x, y);
       });
     });
-  }
+  };
+
+  Game.prototype.updateCellUi = function (x, y) {
+    var cell = $(".cell[data-x='" + x + "'][data-y='" + y + "']").attr('class', 'cell').html(''),
+        cellFlag = this.getCell(x, y)
+
+    if (cellFlag === CellFlags.MINE) {
+      cell.addClass('mineHere');
+    } else if (cellFlag === CellFlags.CLEARED) {
+      cell.addClass('cleared').html(this.mineProximities[x + ',' + y]);
+    } else if (cellFlag === CellFlags.FLAGGED) {
+      cell.addClass('flagged');
+    }
+  };
 
   Game.prototype.createGrid = function () {
     var height = this.size,
@@ -67,14 +80,20 @@ var MinesweeperGame = (function () {
     }
   };
 
-  Game.prototype.cellClear = function (x, y) {
-    if (this.bombAt(x, y)) {
-      this.board.trigger('gameOver');
-    } else {
-      var adjacentMines = this.numberOfMinesAroundCell(x, y);
-      this.markCellAs(x, y, CellFlags.CLEARED);
-      this.mineProximities[x + ',' + y] = adjacentMines;
+  Game.prototype.cellClick = function (x, y, isFlagging) {
+    if (isFlagging) {
+      this.markCellAs(x, y, this.getCell(x, y) === CellFlags.FLAGGED ? CellFlags.BLANK : CellFlags.FLAGGED);
+    } else {    
+      if (this.bombAt(x, y)) {
+        this.board.trigger('gameOver');
+      } else {
+        var adjacentMines = this.numberOfMinesAroundCell(x, y);
+        this.markCellAs(x, y, CellFlags.CLEARED);
+        this.mineProximities[x + ',' + y] = adjacentMines;
+        // TODO branching to clear adjacent areas
+      }
     }
+    this.updateCellUi(x, y);
   };
 
   Game.prototype.bombAt = function (x, y) {

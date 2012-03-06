@@ -1,23 +1,19 @@
 (function ($, undefined) {
-  "use strict";
+  // "use strict";
 
   var board = $('#board'),
       size = 8,
       difficulty = 'NORMAL',
-      currentGame,
-      gameState = {}
+      // currentGame,
+      gameState = {};
 
   function resizeCells() {
-    var tds = board.find('td');
-    tds.height(tds.width());
+    var cells = board.find('.cell');
+    cells.height(cells.width());
   }
 
   $(window).resize(resizeCells);
   $(resizeCells);
-
-  board.on('click', 'td', function () {
-    $(this).toggleClass('marked');
-  });
 
   $('#newGameControl').on('click', 'ul li, div>a:first-child', function (event) {
     promptNewGame((function () {
@@ -39,10 +35,24 @@
     }).bind(this));
   }).val(8);
 
-  board.on('gameCreated', function () {
-    currentGame.renderFull();
-    resizeCells();
-  })
+
+  $(function () {
+    board.on('gameCreated', function () {
+      currentGame.renderFull();
+      resizeCells();
+    }).on('gameOver', function () {
+      alert('GAME OVER');
+    }).on('mousedown', '.cell', function (event) {
+      var data = $(this).data();
+      currentGame.cellClick(data.x, data.y, event.which === 3);
+    }).on('contextmenu', function () {
+      return false;
+    })    
+  });
+
+  $('#cheat').on('click', function () {
+    board.toggleClass('cheating');
+  });
 
   function promptNewGame(continueCallback, cancelCallback) {
     if (false) {
