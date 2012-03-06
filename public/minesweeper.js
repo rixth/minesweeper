@@ -30,7 +30,7 @@ var MinesweeperGame = (function () {
 
     // Calculate the number of mines, based off the notion that an 8x8 grid
     // has 10 mines, the apply the difficulty modifier.
-    this.mineCount = Math.round(size / 8 * 10 * Difficulties[difficulty]);
+    this.mineCount = Math.round((size * size) / 64 * 10 * Difficulties[difficulty]);
 
     _.defer((function () {
       this.createGrid();
